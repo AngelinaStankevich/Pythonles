@@ -4,11 +4,17 @@
 # Создать экземпляр банковского аккаунта и проверить его работу.
 
 from datetime import datetime
+from enum import Enum
+
+
+class OperationEnum(Enum):
+    PLUS = "пополнение счета"
+    MINUS = "снятие денег"
 
 
 class AccountHistory:
-    def __init__(self, operation, amount, data_time):
-        self.operation = operation
+    def __init__(self, OperationEnum, amount, data_time):
+        self.operation = OperationEnum
         self.amount = amount
         self.data_time = data_time
 
@@ -20,7 +26,7 @@ class BankAccount:
 
     def add_money(self, amount: int or float) -> int or float:  # пополнение счета
         self.balance += amount
-        operation = AccountHistory("пополнение счета", amount, datetime.now())
+        operation = AccountHistory(OperationEnum.PLUS, amount, datetime.now())
         self.history.append(operation)
 
     def withdraw_money(self, amount):  # снятие денег со счета
@@ -28,7 +34,7 @@ class BankAccount:
             print("Недостаточно средств")
         else:
             self.balance -= amount
-            operation = AccountHistory("снятие денег", amount, datetime.now())
+            operation = AccountHistory(OperationEnum.MINUS, amount, datetime.now())
             self.history.append(operation)
 
     def print_history(self):
